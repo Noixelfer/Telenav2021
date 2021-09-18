@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChameleonModel : MonoBehaviour
+[CreateAssetMenu(fileName = "ChameleonModel", menuName = "Properties/ChameleonModel", order = 2)]
+public class ChameleonModel : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public float MovementSpeed;
+	public float JumpForce;
+	[Range(0, 1)] public float InAirMovementPercentage;
+	public float MaxTongueDistance;
+	public float TongueChargeTime;
+	public AnimationCurve TongueDistanceCurve;
 }
