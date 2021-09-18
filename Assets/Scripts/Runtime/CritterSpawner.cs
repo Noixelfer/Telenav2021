@@ -11,7 +11,7 @@ public class CritterSpawner
 	public CritterSpawner()
 	{
 		generatorData = Resources.Load<CritterGeneratorData>(Paths.CRITTER_GENERATOR_DATA);
-		critterPrefab = Resources.Load<CritterController>(Paths.CRITTER_PREFAB);
+		critterPrefab = Resources.Load<CritterController>(Paths.FIREFLY_PREFAB);
 		crittersContainer = new GameObject("CrittersContainer").transform;
 	}
 

@@ -5,5 +5,5 @@ using UnityEngine;
 public class Paths 
 {
 	public const string CRITTER_GENERATOR_DATA = "Data/CritterGeneratorData";
-	public const string CRITTER_PREFAB = "Prefabs/Critter";
+	public const string FIREFLY_PREFAB = "Prefabs/Firefly";
 }

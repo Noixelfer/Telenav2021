@@ -8,7 +8,7 @@ public class ChameleonModel : ScriptableObject
 	public float MovementSpeed;
 	public float JumpForce;
 	[Range(0, 1)] public float InAirMovementPercentage;
-	public float MaxTongueDistance;
+	public float MaxTongueForce;
 	public float TongueChargeTime;
 	public AnimationCurve TongueDistanceCurve;
 }

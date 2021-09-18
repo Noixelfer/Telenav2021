@@ -1,22 +1,25 @@
 {
   "dependencies": {
     "com.unity.2d.animation": {
-      "version": "3.2.3",
+      "version": "3.2.11",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.2d.common": "2.0.2",
+        "com.unity.2d.common": "2.1.0",
         "com.unity.mathematics": "1.1.0",
-        "com.unity.2d.sprite": "1.0.0"
+        "com.unity.2d.sprite": "1.0.0",
+        "com.unity.modules.animation": "1.0.0",
+        "com.unity.modules.uielements": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.2d.common": {
-      "version": "2.0.2",
+      "version": "2.1.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.2d.sprite": "1.0.0"
+        "com.unity.2d.sprite": "1.0.0",
+        "com.unity.modules.uielements": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -127,11 +130,11 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.jobs": {
-      "version": "0.2.10-preview.13",
+      "version": "0.2.8-preview.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.collections": "0.9.0-preview.6",
+        "com.unity.collections": "0.7.1-preview.3",
         "com.unity.mathematics": "1.1.0"
       },
       "url": "https://packages.unity.com"
