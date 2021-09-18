@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95d546f6e26f64b4797335b2c50f28a2, type: 3}
+  m_Name: CritterGeneratorData
+  m_EditorClassIdentifier: 
+  Colors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 1, g: 0.64705884, b: 0, a: 0}
+  - {r: 1, g: 1, b: 0, a: 0}
+  - {r: 0, g: 0.5019608, b: 0, a: 0}
+  - {r: 0, g: 0, b: 1, a: 0}
+  - {r: 0.29411766, g: 0, b: 0.50980395, a: 0}
+  - {r: 0.9333334, g: 0.50980395, b: 0.9333334, a: 0}
+  SpeedMin: 0.25
+  SpeedMax: 0.33
+  DirectionChangeTimeMin: 5
+  DirectionChangeTimeMax: 12
+  FactorE: 0.8
+  FactorPI: -1.8
+  Factor1: 3.3
+  FactorTotal: -0.75
+  ScaleEMin: -1.1
+  ScaleEMax: 0.6
+  ScalePIMin: 0.3
+  ScalePIMax: 0.8
+  Scale1Min: 0
+  Scale1Max: 0
