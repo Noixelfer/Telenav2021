@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class ChameleonController : MonoBehaviour
 {
 	private const float JUMP_DELAY = 0.2f;
+	private const float ATTACK_DELAY = 0.5f;
 
 	[SerializeField] private Rigidbody2D body;
 	[SerializeField] private new BoxCollider2D collider;
@@ -17,6 +18,7 @@ public class ChameleonController : MonoBehaviour
 	[SerializeField] private AnimatorController animatorController;
 
 	private float lastJumpTime = 0f;
+	private float lastAttackTime = 0f;
 	private float desiredVelocity;
 	private float currentVelocity;
 	private float acceleration;
@@ -37,6 +39,13 @@ public class ChameleonController : MonoBehaviour
 
 	private void LaunchTongue(InputAction.CallbackContext context)
 	{
+		if (Time.time - lastAttackTime <= ATTACK_DELAY)
+		{
+			return;
+		}
+
+		lastAttackTime = Time.time;
+		animatorController.PlayAttackAnimation();
 		if (launched) return;
 		tongue.LaunchTongue(10f);
 		launched = true;

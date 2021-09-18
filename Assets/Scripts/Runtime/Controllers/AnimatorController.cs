@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class AnimatorController : MonoBehaviour
 {
-	const string SPEED_KEY = "Speed";
+	const string SPEED = "Speed";
+	const string ATTACK = "Attack";
 
 	[SerializeField] private Animator animator;
 
+	public void PlayAttackAnimation()
+	{
+		animator.SetTrigger(ATTACK);
+	}
+
 	public void Update(float characterSpeed)
 	{
-		animator.SetFloat(SPEED_KEY, Mathf.Abs(characterSpeed));
+		animator.SetFloat(SPEED, Mathf.Abs(characterSpeed));
 	}
 }
