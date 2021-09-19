@@ -50,7 +50,6 @@ public class TongueController : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		DestroyImmediate(blueprint);
 		TongueEnd.FireflyCatched -= FireflyCatched;
 	}
 
