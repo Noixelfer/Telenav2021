@@ -29,7 +29,7 @@ public class ShadowManager : MonoBehaviour
 
 	private void Start()
 	{
-		appearTime = Random.Range(shadowData.MinimumAppearCooldown, shadowData.MaximumAppearCooldown) * 1.5f; //We give more time at the start before the shadow appears
+		appearTime = Time.time + Random.Range(shadowData.MinimumAppearCooldown, shadowData.MaximumAppearCooldown) * 1.5f; //We give more time at the start before the shadow appears
 	}
 
 	private void Update()
@@ -59,6 +59,12 @@ public class ShadowManager : MonoBehaviour
 
 		hearthBeat.Stop();
 		OnShadowAppearEnd?.Invoke(chameleonController.IsCamouflage);
+
+		if (chameleonController.IsCamouflage)
+		{
+			appearTime = Time.time + Random.Range(shadowData.MinimumAppearCooldown, shadowData.MaximumAppearCooldown); //We give more time at the start before the shadow appears
+		}
+		appearRoutine = null;
 	}
 
 	private void PrepareHearthbeatAudio()

@@ -15,10 +15,10 @@ MonoBehaviour:
   MovementSpeed: 5
   JumpForce: 11
   InAirMovementPercentage: 0.7
-  MaxTongueDistance: 5
+  MaxTongueDistance: 8
   TongueChargeTime: 3
   AttackTime: 0.3
-  ColorLifetime: 5
+  ColorLifetime: 20
   TongueDistanceCurve:
     serializedVersion: 2
     m_Curve:

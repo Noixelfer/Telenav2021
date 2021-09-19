@@ -81,24 +81,45 @@ public class ChameleonController : MonoBehaviour
 
 	private void UpdateCharacterColor()
 	{
-		var r = 0f;
-		var g = 0f;
-		var b = 0f;
+		var colors = model.Colors.ToArray();
+		var yellowColor = new Color(1f, 1f, 0f);
 
-		var ratio = 1f / model.Colors.Count;
-		foreach (var color in model.Colors)
+		if (colors.Length == 0)
 		{
-			r += color.Color.r * ratio;
-			g += color.Color.g * ratio;
-			b += color.Color.b * ratio;
+			currentColor = Color.white;
+		}
+		else if (colors.Length == 1)
+		{
+			currentColor = colors[0].Color;
+		}
+		else if (colors[0].Color == colors[1].Color)
+		{
+			currentColor = colors[0].Color;
+		}
+		else
+		{
+			if ((colors[0].Color == Color.red && colors[1].Color == Color.blue) ||
+				(colors[1].Color == Color.red && colors[0].Color == Color.blue))
+			{
+				currentColor = new Color(0.5f, 0f, 0.5f);
+			}
+			else if ((colors[0].Color == Color.red && colors[1].Color == yellowColor) ||
+				(colors[1].Color == Color.red && colors[0].Color == yellowColor))
+			{
+				currentColor = new Color(1f, 0.5f, 0f);
+
+			}
+			else if ((colors[0].Color == Color.blue && colors[1].Color == yellowColor) ||
+				(colors[1].Color == Color.blue && colors[0].Color == yellowColor))
+			{
+				currentColor = new Color(0f, 1f, 0f);
+			}
+			else
+			{
+				currentColor = Color.gray;
+			}
 		}
 
-		if (model.Colors.Count == 0)
-		{
-			r = g = b = 1f;
-		}
-
-		currentColor = new Color(r, g, b);
 		renderer.color = currentColor;
 		UpdateCamouflageState();
 	}
