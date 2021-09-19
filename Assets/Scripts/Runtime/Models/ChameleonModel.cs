@@ -39,4 +39,9 @@ public class ChameleonModel : ScriptableObject
 	public AnimationCurve TongueDistanceCurve;
 	[Range(0, 4)] public int ColorsSize;
 	[HideInInspector] public Queue<ChameleonColor> Colors = new Queue<ChameleonColor>();
+
+	public void Reset()
+	{
+		Colors.Clear();
+	}
 }

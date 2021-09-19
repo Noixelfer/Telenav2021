@@ -34,6 +34,7 @@ public class ChameleonController : MonoBehaviour
 
 	private void Awake()
 	{
+		model.Reset();
 		alive = true;
 		movementData.JumpCallback += Jump;
 		movementData.LaunchTongueCallback += PlayAttack;

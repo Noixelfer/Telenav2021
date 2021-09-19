@@ -57,6 +57,7 @@ public class ShadowManager : MonoBehaviour
 			yield return null;
 		}
 
+		hearthBeat.Stop();
 		OnShadowAppearEnd?.Invoke(chameleonController.IsCamouflage);
 	}
 
