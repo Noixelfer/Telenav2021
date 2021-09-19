@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: ShadowData
   m_EditorClassIdentifier: 
   BaseAppearCooldown: 18
-  MinimumAppearCooldown: 1
-  MaximumAppearCooldown: 2
+  MinimumAppearCooldown: 20
+  MaximumAppearCooldown: 30
   AppearCooldownCurve:
     serializedVersion: 2
     m_Curve:
@@ -29,12 +29,12 @@ MonoBehaviour:
       outWeight: 0.060198925
     - serializedVersion: 3
       time: 1
-      value: 0.3
-      inSlope: -1.7026637
-      outSlope: -1.7026637
+      value: 0.7
+      inSlope: -0.9507074
+      outSlope: -0.9507074
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.05097449
+      inWeight: 0.068965495
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

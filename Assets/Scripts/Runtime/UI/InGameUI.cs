@@ -12,8 +12,11 @@ public class InGameUI : MonoBehaviour
 	[SerializeField] private Image vignette;
 	[SerializeField] private AnimationCurve vignetteCurve;
 	[SerializeField] private CanvasGroup endScreen;
+	[SerializeField] private CanvasGroup winScreen;
 	[SerializeField] private GameObject colorCombo;
 	[SerializeField] private Button tryAgain;
+	[SerializeField] private Button tryAgainWin;
+	[SerializeField] private ShrinesManager shrinesManager;
 
 	private bool shadowAppearing = false;
 	private Color vignetteColor = Color.white;
@@ -23,8 +26,16 @@ public class InGameUI : MonoBehaviour
 		ShadowManager.OnShadowAppearStart += ShadowAppearStarted;
 		ShadowManager.OnShadowAppearEnd += ShadowAppearEnded;
 		tryAgain.onClick.AddListener(TryAgain);
+		tryAgainWin.onClick.AddListener(TryAgain);
 		endScreen.gameObject.SetActive(false);
+		winScreen.gameObject.SetActive(false);
+		shrinesManager.GameWon += ShowWinScreen;
 		vignette.enabled = false;
+	}
+
+	private void ShowWinScreen()
+	{
+		winScreen.gameObject.SetActive(true);
 	}
 
 	private void TryAgain()

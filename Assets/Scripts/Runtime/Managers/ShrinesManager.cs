@@ -8,6 +8,8 @@ public class ShrinesManager : MonoBehaviour
 	[SerializeField] private List<ShrineController> shrines;
 	private int activatedShrinesCount = 0;
 
+	public Action GameWon;
+
 	private void Awake()
 	{
 		foreach (var shrine in shrines)
@@ -22,7 +24,7 @@ public class ShrinesManager : MonoBehaviour
 		Debug.LogError("SHRINEEEE ACTIVATED");
 		if (activatedShrinesCount >= shrines.Count)
 		{
-			//Win
+			GameWon?.Invoke();
 		}
 	}
 }
