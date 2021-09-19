@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class ChameleonController : MonoBehaviour
 {
 	private const float JUMP_DELAY = 0.2f;
-	private const float ATTACK_DELAY = 0.5f;
+	private const float ATTACK_DELAY = 1f;
 
 	[SerializeField] private Rigidbody2D body;
 	[SerializeField] private new BoxCollider2D collider;
@@ -28,16 +28,19 @@ public class ChameleonController : MonoBehaviour
 	private void Awake()
 	{
 		movementData.JumpCallback += Jump;
-		movementData.LaunchTongueCallback += LaunchTongue;
+		movementData.LaunchTongueCallback += PlayAttack;
+		animatorController.AttackAction += LaunchTongue;
+		tongue.Initialize(model);
 	}
 
 	private void OnDestroy()
 	{
 		movementData.JumpCallback -= Jump;
-		movementData.LaunchTongueCallback -= LaunchTongue;
+		movementData.LaunchTongueCallback -= PlayAttack;
+		animatorController.AttackAction -= LaunchTongue;
 	}
 
-	private void LaunchTongue(InputAction.CallbackContext context)
+	private void PlayAttack(InputAction.CallbackContext context)
 	{
 		if (Time.time - lastAttackTime <= ATTACK_DELAY)
 		{
@@ -46,9 +49,12 @@ public class ChameleonController : MonoBehaviour
 
 		lastAttackTime = Time.time;
 		animatorController.PlayAttackAnimation();
-		if (launched) return;
-		tongue.LaunchTongue(10f);
 		launched = true;
+	}
+
+	private void LaunchTongue()
+	{
+		tongue.LaunchTongue(30f);
 	}
 
 	private void Jump()
