@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Colors:
   - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 1, g: 1, b: 0, a: 0}
+  - {r: 1, g: 1, b: 0, a: 1}
   SpeedMin: 0.25
   SpeedMax: 0.33
-  DirectionChangeTimeMin: 5
+  DirectionChangeTimeMin: 10
   DirectionChangeTimeMax: 12
   FactorE: 0.8
   FactorPI: -1.8

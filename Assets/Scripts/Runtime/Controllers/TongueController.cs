@@ -34,8 +34,12 @@ public class TongueController : MonoBehaviour
 
 	private void Awake()
 	{
-		ropeRenderer.enabled = false;
 		TongueEnd.FireflyCatched += FireflyCatched;
+	}
+
+	private void Start()
+	{
+		ropeRenderer.enabled = false;
 	}
 
 	private void FireflyCatched(Color color)

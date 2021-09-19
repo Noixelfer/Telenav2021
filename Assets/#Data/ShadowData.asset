@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f47ef7a2a922ab546a5456910acdbba8, type: 3}
   m_Name: ShadowData
   m_EditorClassIdentifier: 
-  BaseAppearCooldown: 15
-  MinimumAppearCooldown: 1
-  MaximumAppearCooldown: 2
+  BaseAppearCooldown: 10
+  MinimumAppearCooldown: 30
+  MaximumAppearCooldown: 45
   AppearCooldownCurve:
     serializedVersion: 2
     m_Curve:

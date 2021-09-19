@@ -7,7 +7,7 @@ public class AnimatorController : MonoBehaviour
 {
 	const string SPEED = "Speed";
 	const string ATTACK = "Attack";
-
+	private const string DEATH = "Death";
 	public Action AttackAction;
 	[SerializeField] private Animator animator;
 
@@ -19,6 +19,11 @@ public class AnimatorController : MonoBehaviour
 	public void Attack()
 	{
 		AttackAction?.Invoke();
+	}
+
+	public void PlayDeathAnimation()
+	{
+		animator.SetTrigger(DEATH);
 	}
 
 	public void Update(float characterSpeed)

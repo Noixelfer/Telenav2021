@@ -16,9 +16,10 @@ public class ShadowManager : MonoBehaviour
 	[SerializeField] private AudioClip hearthbeatSlow;
 	[SerializeField] private AudioClip hearthbeatFast;
 	[SerializeField] private Light2D globalLight;
+	[SerializeField] private ChameleonController chameleonController;
 
-	public Action OnShadowAppearStart;
-	public Action<bool> OnShadowAppearEnd;
+	public static Action OnShadowAppearStart;
+	public static Action<bool> OnShadowAppearEnd;
 	public float AppearProgress { get; private set; } = 0f;
 
 	private float appearTime;
@@ -56,7 +57,7 @@ public class ShadowManager : MonoBehaviour
 			yield return null;
 		}
 
-		OnShadowAppearEnd?.Invoke(true);
+		OnShadowAppearEnd?.Invoke(chameleonController.IsCamouflage);
 	}
 
 	private void PrepareHearthbeatAudio()

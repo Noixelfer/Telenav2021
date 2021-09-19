@@ -20,7 +20,7 @@ public class ChameleonController : MonoBehaviour
 	[SerializeField] private SpriteRenderer renderer;
 
 	public bool IsCamouflage { get; private set; } = false;
-
+	public Action<Color> OnFireflyCatched;
 	private CamouflageArea currentCamouflageArea = null;
 	private float lastJumpTime = 0f;
 	private float lastAttackTime = 0f;
@@ -29,16 +29,19 @@ public class ChameleonController : MonoBehaviour
 	private float acceleration;
 	private float force;
 	bool launched = false;
+	bool alive = true;
 	Color currentColor;
 
 	private void Awake()
 	{
+		alive = true;
 		movementData.JumpCallback += Jump;
 		movementData.LaunchTongueCallback += PlayAttack;
 		animatorController.AttackAction += LaunchTongue;
 		tongue.FireflyCatchedCallback += FireflyCatched;
 		tongue.Initialize(model);
 		UpdateCharacterColor();
+		ShadowManager.OnShadowAppearEnd += OnShadowAppearEnd;
 	}
 
 	private void OnDestroy()
@@ -47,17 +50,32 @@ public class ChameleonController : MonoBehaviour
 		movementData.LaunchTongueCallback -= PlayAttack;
 		animatorController.AttackAction -= LaunchTongue;
 		tongue.FireflyCatchedCallback -= FireflyCatched;
+		ShadowManager.OnShadowAppearEnd -= OnShadowAppearEnd;
 	}
 
 	private void FireflyCatched(Color color)
 	{
-		model.Colors.Enqueue(new ChameleonColor { Color = color, StartTime = Time.time });
+		model.Colors.Enqueue(new ChameleonColor(color, model.ColorLifetime));
 		if (model.Colors.Count > model.ColorsSize)
 		{
 			model.Colors.Dequeue();
 		}
 
+		OnFireflyCatched?.Invoke(color);
 		UpdateCharacterColor();
+	}
+
+	private void OnShadowAppearEnd(bool survived)
+	{
+		if (survived)
+		{
+			return;
+		}
+
+		alive = false;
+		body.velocity = Vector2.zero;
+		body.isKinematic = true;
+		animatorController.PlayDeathAnimation();
 	}
 
 	private void UpdateCharacterColor()
@@ -112,11 +130,14 @@ public class ChameleonController : MonoBehaviour
 
 	private void Update()
 	{
+		if (!alive) return;
 		animatorController.Update(movementData.MoveValue.x);
+		UpdateColorsTimers();
 	}
 
 	private void FixedUpdate()
 	{
+		if (!alive) return;
 		desiredVelocity = movementData.MoveValue.x * model.MovementSpeed * (groundDetector.OnGround ? 1f : model.InAirMovementPercentage);
 
 		if (movementData.MoveValue.x != 0)
@@ -130,8 +151,23 @@ public class ChameleonController : MonoBehaviour
 		body.AddForce(Vector3.right * force, ForceMode2D.Force);
 	}
 
+	private void UpdateColorsTimers()
+	{
+		foreach (var color in model.Colors)
+		{
+			color.Update(Time.deltaTime);
+		}
+
+		if (model.Colors.Count > 0f && model.Colors.Peek().TimePercentage() == 0)
+		{
+			model.Colors.Dequeue();
+			UpdateCharacterColor();
+		}
+	}
+
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
+		if (!alive) return;
 		if (collision.GetComponent<CamouflageArea>() is var area && area != null)
 		{
 			currentCamouflageArea = area;
@@ -141,6 +177,7 @@ public class ChameleonController : MonoBehaviour
 
 	private void OnTriggerExit2D(Collider2D collision)
 	{
+		if (!alive) return;
 		if (currentCamouflageArea != null && collision.gameObject == currentCamouflageArea.gameObject)
 		{
 			currentCamouflageArea = null;

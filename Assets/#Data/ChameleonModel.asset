@@ -18,6 +18,7 @@ MonoBehaviour:
   MaxTongueDistance: 5
   TongueChargeTime: 3
   AttackTime: 0.3
+  ColorLifetime: 5
   TongueDistanceCurve:
     serializedVersion: 2
     m_Curve:

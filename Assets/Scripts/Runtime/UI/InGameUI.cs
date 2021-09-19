@@ -14,19 +14,20 @@ public class InGameUI : MonoBehaviour
 
 	private void Awake()
 	{
-		shadowManager.OnShadowAppearStart += ShadowAppearStarted;
-		shadowManager.OnShadowAppearEnd += ShadowAppearEnded;
+		ShadowManager.OnShadowAppearStart += ShadowAppearStarted;
+		ShadowManager.OnShadowAppearEnd += ShadowAppearEnded;
 		vignette.enabled = false;
 	}
 
 	private void OnDestroy()
 	{
-		shadowManager.OnShadowAppearStart -= ShadowAppearStarted;
-		shadowManager.OnShadowAppearEnd -= ShadowAppearEnded;
+		ShadowManager.OnShadowAppearStart -= ShadowAppearStarted;
+		ShadowManager.OnShadowAppearEnd -= ShadowAppearEnded;
 	}
 
 	private void ShadowAppearEnded(bool survived)
 	{
+		if (!survived) return;
 		shadowAppearing = false;
 		vignette.enabled = false;
 	}
