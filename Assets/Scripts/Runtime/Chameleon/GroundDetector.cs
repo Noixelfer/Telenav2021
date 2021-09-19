@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class GroundDetector : MonoBehaviour
 {
+	const float TIME_TRESHOLD = 0.1f;
 	public bool OnGround = true;
+	private float lastTimeOnGround = 0f;
 
-	private void OnTriggerEnter2D(Collider2D collision)
+	private void OnTriggerStay2D(Collider2D other)
 	{
 		OnGround = true;
+		lastTimeOnGround = Time.time;
 	}
 
-	private void OnTriggerExit2D(Collider2D collision)
+	private void LateUpdate()
 	{
-		OnGround = false;
+		if (OnGround && Time.time - lastTimeOnGround >= TIME_TRESHOLD)
+		{
+			OnGround = false;
+		}
 	}
 }

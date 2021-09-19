@@ -11,7 +11,7 @@ public class ChameleonController : MonoBehaviour
 	private const float COLOR_ERROR_TRESHOLD = 12f;
 
 	[SerializeField] private Rigidbody2D body;
-	[SerializeField] private new BoxCollider2D collider;
+	[SerializeField] private new Collider2D collider;
 	[SerializeField] private ChameleonModel model;
 	[SerializeField] private InputData movementData;
 	[SerializeField] private GroundDetector groundDetector;

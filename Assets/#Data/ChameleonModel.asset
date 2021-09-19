@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ChameleonModel
   m_EditorClassIdentifier: 
   MovementSpeed: 5
-  JumpForce: 7
+  JumpForce: 11
   InAirMovementPercentage: 0.7
   MaxTongueDistance: 5
   TongueChargeTime: 3
