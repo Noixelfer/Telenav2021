@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f47ef7a2a922ab546a5456910acdbba8, type: 3}
+  m_Name: ShadowData
+  m_EditorClassIdentifier: 
+  BaseAppearCooldown: 15
+  MinimumAppearCooldown: 1
+  MaximumAppearCooldown: 2
+  AppearCooldownCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.015258864
+      outSlope: -0.015258864
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.060198925
+    - serializedVersion: 3
+      time: 1
+      value: 0.2
+      inSlope: -2.4538777
+      outSlope: -2.4538777
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.3017637
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  HearthbeatCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.0023498535
+      inSlope: 0.3957396
+      outSlope: 0.3957396
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.2776694
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 3.4649613
+      outSlope: 0.79719734
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.059064925
+      outWeight: 0.28651
+    - serializedVersion: 3
+      time: 1
+      value: 1.7
+      inSlope: 3.6787188
+      outSlope: 3.6787188
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.17348218
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

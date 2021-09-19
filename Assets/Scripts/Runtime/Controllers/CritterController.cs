@@ -20,6 +20,10 @@ public class CritterController : MonoBehaviour
 		glowLight.color = model.Color;
 	}
 
+	public Color GetColor()
+	{
+		return critterModel.Color;
+	}
 
 	private void FixedUpdate()
 	{

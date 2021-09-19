@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct ChameleonColor
+{
+	public Color Color;
+	public float StartTime;
+}
 [CreateAssetMenu(fileName = "ChameleonModel", menuName = "Properties/ChameleonModel", order = 2)]
 public class ChameleonModel : ScriptableObject
 {
@@ -12,4 +17,6 @@ public class ChameleonModel : ScriptableObject
 	public float TongueChargeTime;
 	public float AttackTime;
 	public AnimationCurve TongueDistanceCurve;
+	[Range(0, 4)]public int ColorsSize;
+	[HideInInspector] public Queue<ChameleonColor> Colors = new Queue<ChameleonColor>();
 }

@@ -12,30 +12,42 @@ public class TongueController : MonoBehaviour
 
 	[SerializeField] private ObiSolver solver;
 	[SerializeField] private ObiCollider2D mouth;
-	[SerializeField] private ObiCollider2D tongueEndPrefab;
+	[SerializeField] private TongueEnd tongueEndPrefab;
 	[SerializeField] private Material material;
 	[SerializeField] private ObiRopeSection section;
-	[SerializeField] private Rigidbody2D tongueEndRigidbody;
 	[SerializeField] private ObiRope rope;
 	[SerializeField] private ObiRopeBlueprint blueprint;
 	[SerializeField] private ObiRopeExtrudedRenderer ropeRenderer;
 	[SerializeField] private ObiRopeCursor cursor;
+	[SerializeField] private ObiParticleAttachment tongueEndAttachment;
 	private Coroutine launchTongueRoutine;
+	private TongueEnd tongEndInstance;
 
 	private ChameleonModel model;
 	private float startTime;
 	private Vector2 targetPos;
 	private float elapsed;
 	private float attackPercentage = 0f;
+	private bool fireflyCatced = false;
+
+	public Action<Color> FireflyCatchedCallback;
 
 	private void Awake()
 	{
 		ropeRenderer.enabled = false;
+		TongueEnd.FireflyCatched += FireflyCatched;
+	}
+
+	private void FireflyCatched(Color color)
+	{
+		fireflyCatced = true;
+		FireflyCatchedCallback?.Invoke(color);
 	}
 
 	private void OnDestroy()
 	{
 		DestroyImmediate(blueprint);
+		TongueEnd.FireflyCatched -= FireflyCatched;
 	}
 
 	public void Initialize(ChameleonModel model)
@@ -45,15 +57,27 @@ public class TongueController : MonoBehaviour
 
 	public void LaunchTongue(float force)
 	{
+		fireflyCatced = false;
 		Vector3 mouse = Mouse.current.position.ReadValue();
 		mouse.z = transform.position.z - Camera.main.transform.position.z;
 		Vector3 mouseInScene = Camera.main.ScreenToWorldPoint(mouse);
 		var direction = (mouseInScene - transform.position).normalized;
-		targetPos = mouseInScene;
 
-		tongueEndRigidbody.isKinematic = false;
-		//tongueEndRigidbody.AddForce(direction * force, ForceMode2D.Impulse);
-		if (launchTongueRoutine != null) StopCoroutine(launchTongueRoutine);
+		if (launchTongueRoutine != null)
+		{
+			StopCoroutine(launchTongueRoutine);
+			if (tongEndInstance != null && tongEndInstance.gameObject != null)
+			{
+				Destroy(tongEndInstance.gameObject);
+				tongueEndAttachment.target = null;
+				rope.SetConstraintsDirty(Oni.ConstraintType.Pin);
+			}
+		}
+
+		tongEndInstance = Instantiate(tongueEndPrefab, transform.position + direction * 0.1f, Quaternion.identity);
+		tongueEndAttachment.target = tongEndInstance.transform;
+		targetPos = mouseInScene;
+		//tongueEndRigidbody.AddForce(direction * force, ForceMode2D.Impulse)
 		launchTongueRoutine = StartCoroutine(LaunchTongueRoutine(direction));
 	}
 
@@ -67,7 +91,7 @@ public class TongueController : MonoBehaviour
 		var currentTongueDist = 0f;
 		ropeRenderer.enabled = true;
 
-		while (attackPercentage < 1f)
+		while (attackPercentage < 1f && !fireflyCatced)
 		{
 			elapsed += Time.deltaTime;
 			attackPercentage = elapsed / attackTime;
@@ -76,12 +100,17 @@ public class TongueController : MonoBehaviour
 			var deltaDist = targetDist - currentTongueDist;
 			currentTongueDist = targetDist;
 			cursor.ChangeLength(rope.restLength + deltaDist);
-			tongueEndRigidbody.MovePosition(transform.position + direction * model.MaxTongueDistance * realPercentage);
+			tongEndInstance.Rigidbody2D.MovePosition(transform.position + direction * model.MaxTongueDistance * realPercentage);
 			yield return null;
 		}
 
 		var retractPercentage = 0f;
 		elapsed = 0f;
+
+		if (fireflyCatced)
+		{
+			retractTime *= attackPercentage;
+		}
 
 		while (retractPercentage < 1f)
 		{
@@ -90,11 +119,15 @@ public class TongueController : MonoBehaviour
 			if (rope.restLength > 0 && rope.elements != null && rope.elements.Count > 0)
 			{
 				cursor.ChangeLength(Mathf.Max(model.MaxTongueDistance * (1f - retractPercentage), 0.1f));
-				tongueEndRigidbody.MovePosition(transform.position + direction * model.MaxTongueDistance * (1f - retractPercentage));
+				tongEndInstance.Rigidbody2D.MovePosition(transform.position + direction * model.MaxTongueDistance * (1f - retractPercentage));
 			}
 			yield return null;
 		}
 
+		Destroy(tongEndInstance.gameObject);
+		tongueEndAttachment.target = null;
+		rope.SetConstraintsDirty(Oni.ConstraintType.Pin);
+		fireflyCatced = false;
 		ropeRenderer.enabled = false;
 	}
 }

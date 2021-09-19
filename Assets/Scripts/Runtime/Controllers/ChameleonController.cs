@@ -8,6 +8,7 @@ public class ChameleonController : MonoBehaviour
 {
 	private const float JUMP_DELAY = 0.2f;
 	private const float ATTACK_DELAY = 1f;
+	private const float COLOR_ERROR_TRESHOLD = 12f;
 
 	[SerializeField] private Rigidbody2D body;
 	[SerializeField] private new BoxCollider2D collider;
@@ -16,7 +17,11 @@ public class ChameleonController : MonoBehaviour
 	[SerializeField] private GroundDetector groundDetector;
 	[SerializeField] private TongueController tongue;
 	[SerializeField] private AnimatorController animatorController;
+	[SerializeField] private SpriteRenderer renderer;
 
+	public bool IsCamouflage { get; private set; } = false;
+
+	private CamouflageArea currentCamouflageArea = null;
 	private float lastJumpTime = 0f;
 	private float lastAttackTime = 0f;
 	private float desiredVelocity;
@@ -24,13 +29,16 @@ public class ChameleonController : MonoBehaviour
 	private float acceleration;
 	private float force;
 	bool launched = false;
+	Color currentColor;
 
 	private void Awake()
 	{
 		movementData.JumpCallback += Jump;
 		movementData.LaunchTongueCallback += PlayAttack;
 		animatorController.AttackAction += LaunchTongue;
+		tongue.FireflyCatchedCallback += FireflyCatched;
 		tongue.Initialize(model);
+		UpdateCharacterColor();
 	}
 
 	private void OnDestroy()
@@ -38,6 +46,42 @@ public class ChameleonController : MonoBehaviour
 		movementData.JumpCallback -= Jump;
 		movementData.LaunchTongueCallback -= PlayAttack;
 		animatorController.AttackAction -= LaunchTongue;
+		tongue.FireflyCatchedCallback -= FireflyCatched;
+	}
+
+	private void FireflyCatched(Color color)
+	{
+		model.Colors.Enqueue(new ChameleonColor { Color = color, StartTime = Time.time });
+		if (model.Colors.Count > model.ColorsSize)
+		{
+			model.Colors.Dequeue();
+		}
+
+		UpdateCharacterColor();
+	}
+
+	private void UpdateCharacterColor()
+	{
+		var r = 0f;
+		var g = 0f;
+		var b = 0f;
+
+		var ratio = 1f / model.Colors.Count;
+		foreach (var color in model.Colors)
+		{
+			r += color.Color.r * ratio;
+			g += color.Color.g * ratio;
+			b += color.Color.b * ratio;
+		}
+
+		if (model.Colors.Count == 0)
+		{
+			r = g = b = 1f;
+		}
+
+		currentColor = new Color(r, g, b);
+		renderer.color = currentColor;
+		UpdateCamouflageState();
 	}
 
 	private void PlayAttack(InputAction.CallbackContext context)
@@ -84,5 +128,39 @@ public class ChameleonController : MonoBehaviour
 		acceleration = (desiredVelocity - currentVelocity) / Time.fixedDeltaTime;
 		force = body.mass * acceleration;
 		body.AddForce(Vector3.right * force, ForceMode2D.Force);
+	}
+
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.GetComponent<CamouflageArea>() is var area && area != null)
+		{
+			currentCamouflageArea = area;
+			UpdateCamouflageState();
+		}
+	}
+
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+		if (currentCamouflageArea != null && collision.gameObject == currentCamouflageArea.gameObject)
+		{
+			currentCamouflageArea = null;
+			UpdateCamouflageState();
+		}
+	}
+
+	private void UpdateCamouflageState()
+	{
+		if (currentCamouflageArea == null)
+		{
+			IsCamouflage = false;
+			Debug.Log("Camouflage: " + IsCamouflage);
+			return;
+		}
+
+		var areaColor = currentCamouflageArea.GetColor();
+		var error = Mathf.Abs(areaColor.r - currentColor.r) * 255f + Mathf.Abs(areaColor.g - currentColor.g) * 255f + Mathf.Abs(areaColor.b - currentColor.b) * 255f;
+
+		IsCamouflage = error <= COLOR_ERROR_TRESHOLD;
+		Debug.Log("Camouflage: " + IsCamouflage);
 	}
 }
