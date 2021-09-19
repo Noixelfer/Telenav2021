@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: ShadowData
   m_EditorClassIdentifier: 
   BaseAppearCooldown: 7
-  MinimumAppearCooldown: 1
-  MaximumAppearCooldown: 2
+  MinimumAppearCooldown: 100
+  MaximumAppearCooldown: 1200
   AppearCooldownCurve:
     serializedVersion: 2
     m_Curve:

@@ -6,18 +6,16 @@ public class CritterSpawner
 {
 	private CritterGeneratorData generatorData;
 	private CritterController critterPrefab;
-	private Transform crittersContainer;
 
 	public CritterSpawner()
 	{
 		generatorData = Resources.Load<CritterGeneratorData>(Paths.CRITTER_GENERATOR_DATA);
 		critterPrefab = Resources.Load<CritterController>(Paths.FIREFLY_PREFAB);
-		crittersContainer = new GameObject("CrittersContainer").transform;
 	}
 
-	public CritterController CreateCritter()
+	public CritterController CreateCritter(Vector2 spawnPosition, Transform parent)
 	{
-		var critter = MonoBehaviour.Instantiate(critterPrefab, crittersContainer);
+		var critter = MonoBehaviour.Instantiate(critterPrefab, parent);
 		var critterModel = new CritterModel();
 		critterModel.Color = generatorData.Colors[Random.Range(0, generatorData.Colors.Length)];
 		critterModel.Speed = Random.Range(generatorData.SpeedMin, generatorData.SpeedMax);
@@ -31,7 +29,7 @@ public class CritterSpawner
 		critterModel.ScaleE = Random.Range(generatorData.ScaleEMin, generatorData.ScaleEMax);
 		critterModel.ScalePI = Random.Range(generatorData.ScalePIMin, generatorData.ScalePIMax);
 		critterModel.Scale1 = Random.Range(generatorData.Scale1Min, generatorData.Scale1Max);
-		critter.Initialize(critterModel, Random.Range(-9f, 9f));
+		critter.Initialize(critterModel, spawnPosition);
 
 		return critter;
 	}

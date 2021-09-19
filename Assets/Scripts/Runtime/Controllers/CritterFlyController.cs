@@ -10,15 +10,17 @@ public class CritterFlyController
 	private float flyYvalue;
 	private Rigidbody2D critterRb;
 	private float xPosition;
+	private float yStartPosition;
 	private float yPosition;
 	private bool moveRight;
 	private float nextDiretionChangeTime = 0f;
 
-	public void Initialize(Rigidbody2D critterRb, CritterModel model, float xPosition)
+	public void Initialize(Rigidbody2D critterRb, CritterModel model, Vector2 position)
 	{
 		this.model = model;
 		this.critterRb = critterRb;
-		this.xPosition = xPosition;
+		this.xPosition = position.x;
+		yStartPosition = position.y;
 		moveRight = Random.value <= 0.5f;
 
 		if (moveRight)
@@ -40,7 +42,7 @@ public class CritterFlyController
 		}
 
 		xPosition += (moveRight ? 1 : -1) * model.Speed * Time.deltaTime;
-		yPosition = GetFlyAltitude(model.FlySeed + flyYvalue);
+		yPosition = yStartPosition + GetFlyAltitude(model.FlySeed + flyYvalue);
 		critterRb.MovePosition(new Vector2(xPosition, yPosition));
 	}
 
